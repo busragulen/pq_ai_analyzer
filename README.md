@@ -11,7 +11,7 @@ python3 train_pipeline.py
 python3 train_cnn.py
 
 ----------------------
-streamlit run src/app.py
+Arayüze girmek için: streamlit run src/app.py
 ----------------------
 ## git pull origin mainWindows Kullanıcıları İçin Notlar
 
