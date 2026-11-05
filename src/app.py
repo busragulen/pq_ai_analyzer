@@ -58,7 +58,7 @@ data_source = st.sidebar.radio("Veri Kaynağı:", ["XPQRS Veri Setinden Test Et"
 
 df = None
 if data_source == "XPQRS Veri Setinden Test Et" and os.path.exists("data/XPQRS"):
-    csv_files = sorted([f for f in os.listdir("XPQRS") if f.endswith(".csv")])
+    csv_files = sorted([f for f in os.listdir("data/XPQRS") if f.endswith(".csv")])
     selected_file = st.sidebar.selectbox("Bozulma Sınıfı Seçin:", csv_files)
     df = pd.read_csv(os.path.join("data/XPQRS", selected_file), header=None)
     if df.shape[0] < df.shape[1] and df.shape[1] == 1000:
@@ -105,7 +105,7 @@ if df is not None:
 
         # 1D-CNN
         if os.path.exists("models/pq_cnn_model.pt") and os.path.exists("models/label_encoder.pkl"):
-            encoder = joblib.load("label_encoder.pkl")
+            encoder = joblib.load("models/label_encoder.pkl")
             cnn_model = PQ_1DCNN(num_classes=len(encoder.classes_))
             cnn_model.load_state_dict(torch.load("models/pq_cnn_model.pt", map_location="cpu"))
             cnn_model.eval()
