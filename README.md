@@ -10,4 +10,5 @@ python3 train_pipeline.py
 # 3. 1D-CNN modelinin AWGN gürültü zenginleştirmesiyle eğitilmesi ve stres testi
 python3 train_cnn.py
 
+----------------------
 streamlit run app.py
