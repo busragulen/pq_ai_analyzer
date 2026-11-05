@@ -11,9 +11,9 @@ python3 train_pipeline.py
 python3 train_cnn.py
 
 ----------------------
-streamlit run app.py
+streamlit run src/app.py
 ----------------------
-## Windows Kullanıcıları İçin Notlar
+## git pull origin mainWindows Kullanıcıları İçin Notlar
 
 Bu proje macOS ortamında Apple Silicon M4 işlemci ile geliştirilmiştir. Windows işletim sistemi kullanan geliştiricilerin projeyi klonlayıp çalıştırırken dikkate alması gereken hususlar var lütfen sorun yaşamamak için bunlara dikkat ediniz:
 

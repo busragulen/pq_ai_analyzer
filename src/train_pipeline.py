@@ -9,7 +9,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
 import joblib
 
-def train_and_evaluate(csv_path="xpqrs_features.csv"):
+def train_and_evaluate(csv_path="src/xpqrs_features.csv"):
     print(f"'{csv_path}' okunuyor...")
     df = pd.read_csv(csv_path)
     
@@ -68,7 +68,7 @@ def train_and_evaluate(csv_path="xpqrs_features.csv"):
     print("-" * 65)
     print(f"\n🏆 En Başarılı Model: {best_name} -> Doğruluk: %{best_acc*100:.2f}")
     
-    joblib.dump(best_model, "pq_model_bundle.pkl")
+    joblib.dump(best_model, "models/pq_model_bundle.pkl")
     print("Model 'pq_model_bundle.pkl' olarak kaydedildi.")
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ from sklearn.metrics import accuracy_score
 import shap
 import joblib
 
-def load_raw_xpqrs_data(dataset_folder="XPQRS"):
+def load_raw_xpqrs_data(dataset_folder="data/XPQRS"):
     csv_files = sorted(glob.glob(os.path.join(dataset_folder, "*.csv")))
     X_list, y_list = [], []
     print(f"XPQRS klasöründeki {len(csv_files)} sınıf okunuyor...")
@@ -30,7 +30,7 @@ def load_raw_xpqrs_data(dataset_folder="XPQRS"):
     X = np.vstack(X_list)
     encoder = LabelEncoder()
     y = encoder.fit_transform(y_list)
-    joblib.dump(encoder, "label_encoder.pkl")
+    joblib.dump(encoder, "models/label_encoder.pkl")
     return X, y, encoder
 
 class PQ_1DCNN(nn.Module):
@@ -139,7 +139,7 @@ if __name__ == "__main__":
     robust_model = PQ_1DCNN(num_classes=len(encoder.classes_)).to(device)
     robust_model = train_model(robust_model, aug_train_loader, test_loader, device, epochs=12, name="Robust-CNN")
     
-    torch.save(robust_model.state_dict(), "pq_cnn_model.pt")
+    torch.save(robust_model.state_dict(), "models/pq_cnn_model.pt")
     print("✅ Gürültüye Dayanıklı 1D-CNN Modeli 'pq_cnn_model.pt' olarak kaydedildi!")
     
     
@@ -169,5 +169,5 @@ if __name__ == "__main__":
             "Robust_CNN": rob_acc
         })
         
-    pd.DataFrame(noise_results).to_csv("noise_robustness_results.csv", index=False)
+    pd.DataFrame(noise_results).to_csv("outputs/noise_robustness_results.csv", index=False)
     print("✅ Karşılaştırmalı gürültü sonuçları 'noise_robustness_results.csv' olarak kaydedildi!")
