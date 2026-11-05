@@ -11,7 +11,7 @@ python3 train_pipeline.py
 python3 train_cnn.py
 
 ----------------------
-Arayüze girmek için: streamlit run src/app.py
+Arayüze girmek için: python3 -m streamlit run src/app.py
 ----------------------
 ## Windows Kullanıcıları İçin Notlar
 
