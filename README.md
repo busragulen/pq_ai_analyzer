@@ -13,7 +13,7 @@ python3 train_cnn.py
 ----------------------
 Arayüze girmek için: streamlit run src/app.py
 ----------------------
-## git pull origin mainWindows Kullanıcıları İçin Notlar
+## Windows Kullanıcıları İçin Notlar
 
 Bu proje macOS ortamında Apple Silicon M4 işlemci ile geliştirilmiştir. Windows işletim sistemi kullanan geliştiricilerin projeyi klonlayıp çalıştırırken dikkate alması gereken hususlar var lütfen sorun yaşamamak için bunlara dikkat ediniz:
 
