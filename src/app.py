@@ -57,10 +57,10 @@ f0 = st.sidebar.selectbox("Şebeke Temel Frekansı (Hz)", [50, 60], index=0)
 data_source = st.sidebar.radio("Veri Kaynağı:", ["XPQRS Veri Setinden Test Et", "Dışarıdan CSV Yükle"])
 
 df = None
-if data_source == "XPQRS Veri Setinden Test Et" and os.path.exists("XPQRS"):
+if data_source == "XPQRS Veri Setinden Test Et" and os.path.exists("data/XPQRS"):
     csv_files = sorted([f for f in os.listdir("XPQRS") if f.endswith(".csv")])
     selected_file = st.sidebar.selectbox("Bozulma Sınıfı Seçin:", csv_files)
-    df = pd.read_csv(os.path.join("XPQRS", selected_file), header=None)
+    df = pd.read_csv(os.path.join("data/XPQRS", selected_file), header=None)
     if df.shape[0] < df.shape[1] and df.shape[1] == 1000:
         df = df.T
 else:
@@ -94,8 +94,8 @@ if df is not None:
         col_m1, col_m2 = st.columns(2)
         
         # Random Forest
-        if os.path.exists("pq_model_bundle.pkl"):
-            rf_model, scaler, selector = joblib.load("pq_model_bundle.pkl")
+        if os.path.exists("models/pq_model_bundle.pkl"):
+            rf_model, scaler, selector = joblib.load("models/pq_model_bundle.pkl")
             X_in = scaler.transform(pd.DataFrame([features]))
             if selector is not None:
                 X_in = selector.transform(X_in)
@@ -104,10 +104,10 @@ if df is not None:
             col_m1.success(f"🌲 **Random Forest (Özellik Tabanlı) Kararı:**\n\n**{rf_pred}** (Güven: **%{rf_prob:.1f}**)")
 
         # 1D-CNN
-        if os.path.exists("pq_cnn_model.pt") and os.path.exists("label_encoder.pkl"):
+        if os.path.exists("models/pq_cnn_model.pt") and os.path.exists("models/label_encoder.pkl"):
             encoder = joblib.load("label_encoder.pkl")
             cnn_model = PQ_1DCNN(num_classes=len(encoder.classes_))
-            cnn_model.load_state_dict(torch.load("pq_cnn_model.pt", map_location="cpu"))
+            cnn_model.load_state_dict(torch.load("models/pq_cnn_model.pt", map_location="cpu"))
             cnn_model.eval()
             with torch.no_grad():
                 sig_tensor = torch.tensor(signal, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
@@ -147,8 +147,8 @@ if df is not None:
     with tab2:
         st.subheader("🔍 SHAP (Açıklanabilir Yapay Zeka) Özellik Önem Dereceleri")
         st.write("Modelin 17 güç kalitesi sınıfını ayırt ederken en çok hangi matematiksel/elektriksel özelliğe dayandığını gösterir:")
-        if os.path.exists("shap_importance.csv"):
-            shap_df = pd.read_csv("shap_importance.csv")
+        if os.path.exists("outputs/shap_importance.csv"):
+            shap_df = pd.read_csv("outputs/shap_importance.csv")
             col_s1, col_s2 = st.columns([2, 1])
             with col_s1:
                 fig_s, ax_s = plt.subplots(figsize=(7, 4))
@@ -163,8 +163,8 @@ if df is not None:
     with tab3:
         st.subheader("🛡️ AWGN Şebeke Gürültüsü Dayanıklılık Testi (Öncesi ve Sonrası)")
         st.write("Sadece temiz veriyle eğitilen Standart 1D-CNN ile Gürültü Bağışıklığı Eğitimi (Noise-Aware Training) uygulanmış 1D-CNN modelinin karşılaştırması:")
-        if os.path.exists("noise_robustness_results.csv"):
-            noise_df = pd.read_csv("noise_robustness_results.csv")
+        if os.path.exists("outputs/noise_robustness_results.csv"):
+            noise_df = pd.read_csv("outputs/noise_robustness_results.csv")
             col_n1, col_n2 = st.columns([2, 1])
             with col_n1:
                 fig_n, ax_n = plt.subplots(figsize=(6.5, 3.8))

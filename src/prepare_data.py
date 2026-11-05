@@ -26,7 +26,7 @@ CLASS_NAME_MAP = {
     "Swell_with_Oscillatory_Transient": "Gerilim Yükselmesi + Salınımlı Geçici"
 }
 
-def load_xpqrs_dataset(dataset_folder="XPQRS", fs=5000, f0=50, merge_duplicate_pairs=False):
+def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=False):
     csv_files = sorted(glob.glob(os.path.join(dataset_folder, "*.csv")))
     
     if not csv_files:
@@ -82,4 +82,4 @@ def load_xpqrs_dataset(dataset_folder="XPQRS", fs=5000, f0=50, merge_duplicate_p
     return features_df
 
 if __name__ == "__main__":
-    load_xpqrs_dataset(dataset_folder="XPQRS", fs=5000, f0=50, merge_duplicate_pairs=False)
+    load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=False)
