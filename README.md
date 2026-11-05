@@ -12,3 +12,16 @@ python3 train_cnn.py
 
 ----------------------
 streamlit run app.py
+----------------------
+## Windows Kullanıcıları İçin Notlar
+
+Bu proje macOS ortamında Apple Silicon M4 işlemci ile geliştirilmiştir. Windows işletim sistemi kullanan geliştiricilerin projeyi klonlayıp çalıştırırken dikkate alması gereken hususlar var lütfen sorun yaşamamak için bunlara dikkat ediniz:
+
+1. **Donanım İvmesi (GPU / CPU):** 
+   Kod içerisindeki PyTorch cihaz tanımlamaları Apple Silicon (`mps`) tabanlı tasarlandığından, Windows cihazlarda (NVIDIA ekran kartı kullanan sistemler için) PyTorch'un CUDA uyumlu sürümünün kurulu olduğundan emin olun. Aksi takdirde modeller CPU üzerinden çalışacaktır.
+2. **Sanal Ortam (Virtual Environment):**
+   Projeyi çalıştırmadan önce Windows terminalinde (CMD veya PowerShell) yeni bir sanal ortam oluşturmanız önerilir:
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
