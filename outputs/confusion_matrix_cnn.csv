@@ -1,0 +1,24 @@
+,Darbe Tipi Geçici Olay (Transient),Gerilim Kesintisi (Interruption),Gerilim Yükselmesi (Swell),Gerilim Yükselmesi + Salınımlı Geçici,Gerilim Çökmesi (Sag),Gerilim Çökmesi + Salınımlı Geçici,Harmonik + Gerilim Yükselmesi,Harmonik + Gerilim Çökmesi,Harmonik + Çentiklenme (2'li Melez),Harmonik Bozulma,Kırpışma (Flicker),Kırpışma + Gerilim Yükselmesi,Kırpışma + Gerilim Çökmesi,Kırpışma + Harmonik (2'li Melez),Kırpışma + Yükselme + Harmonik (3'lü Melez),Kırpışma + Çökme + Harmonik (3'lü Melez),Normal Sinüs,Salınımlı Geçici Olay,Yükselme + Harmonik + Darbe Geçicisi (3'lü Melez),Yükselme + Harmonik + Salınımlı Geçici (3'lü Melez),Çentiklenme (Notch),Çökme + Harmonik + Darbe Geçicisi (3'lü Melez),Çökme + Harmonik + Salınımlı Geçici (3'lü Melez)
+Darbe Tipi Geçici Olay (Transient),141,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,6,0,0
+Gerilim Kesintisi (Interruption),0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Gerilim Yükselmesi (Swell),0,0,146,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0
+Gerilim Yükselmesi + Salınımlı Geçici,2,0,0,130,0,0,6,0,0,0,0,4,0,0,4,0,0,4,0,0,0,0,0
+Gerilim Çökmesi (Sag),0,3,0,0,146,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+Gerilim Çökmesi + Salınımlı Geçici,1,0,0,0,0,130,0,5,0,0,0,0,3,0,0,0,0,9,0,0,0,0,2
+Harmonik + Gerilim Yükselmesi,1,0,0,2,0,0,290,0,0,0,1,4,0,0,0,0,0,1,1,0,0,0,0
+Harmonik + Gerilim Çökmesi,2,0,0,0,1,0,0,292,0,0,0,0,1,0,0,3,0,0,0,0,0,1,0
+Harmonik + Çentiklenme (2'li Melez),0,0,0,0,0,0,0,0,147,1,0,0,0,0,0,0,0,0,0,1,0,1,0
+Harmonik Bozulma,0,0,0,0,0,0,0,0,1,148,0,0,0,1,0,0,0,0,0,0,0,0,0
+Kırpışma (Flicker),0,0,0,0,0,0,0,0,0,0,149,0,0,0,0,0,1,0,0,0,0,0,0
+Kırpışma + Gerilim Yükselmesi,0,0,2,0,0,0,21,0,0,0,3,124,0,0,0,0,0,0,0,0,0,0,0
+Kırpışma + Gerilim Çökmesi,0,0,0,0,4,1,0,10,0,0,1,0,133,0,0,0,0,0,0,0,1,0,0
+Kırpışma + Harmonik (2'li Melez),0,0,0,0,0,0,0,0,3,8,0,0,0,137,0,0,0,0,2,0,0,0,0
+Kırpışma + Yükselme + Harmonik (3'lü Melez),0,0,0,0,0,0,3,0,0,0,0,0,0,6,137,0,0,0,4,0,0,0,0
+Kırpışma + Çökme + Harmonik (3'lü Melez),0,0,0,0,0,0,0,0,0,5,0,0,0,1,0,139,0,0,0,0,0,5,0
+Normal Sinüs,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,150,0,0,0,0,0,0
+Salınımlı Geçici Olay,8,0,0,3,0,2,0,0,0,0,0,0,0,0,0,0,1,135,0,1,0,0,0
+Yükselme + Harmonik + Darbe Geçicisi (3'lü Melez),0,0,0,0,0,0,1,0,3,0,0,0,0,2,0,0,0,0,141,3,0,0,0
+Yükselme + Harmonik + Salınımlı Geçici (3'lü Melez),0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,17,129,0,0,2
+Çentiklenme (Notch),15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,134,0,0
+Çökme + Harmonik + Darbe Geçicisi (3'lü Melez),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,149,1
+Çökme + Harmonik + Salınımlı Geçici (3'lü Melez),0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,1,0,24,123

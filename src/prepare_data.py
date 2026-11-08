@@ -2,10 +2,8 @@ import os
 import glob
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 from pq_analyzer import extract_signal_features
 
-# XPQRS karşılıkları
 CLASS_NAME_MAP = {
     "Pure_Sinusoidal": "Normal Sinüs",
     "Sag": "Gerilim Çökmesi (Sag)",
@@ -23,10 +21,19 @@ CLASS_NAME_MAP = {
     "Harmonics_with_Swell": "Harmonik + Gerilim Yükselmesi",
     "Swell_with_Harmonics": "Gerilim Yükselmesi + Harmonik",
     "Sag_with_Oscillatory_Transient": "Gerilim Çökmesi + Salınımlı Geçici",
-    "Swell_with_Oscillatory_Transient": "Gerilim Yükselmesi + Salınımlı Geçici"
+    "Swell_with_Oscillatory_Transient": "Gerilim Yükselmesi + Salınımlı Geçici",
+    # Sentezlenen 2 Yeni İkili Melez Sınıf
+    "Flicker_with_Harmonics": "Kırpışma + Harmonik (2'li Melez)",
+    "Harmonics_with_Notch": "Harmonik + Çentiklenme (2'li Melez)",
+    # Sentezlenen 6 Yeni Simetrik Üçlü Melez Sınıf
+    "Sag_with_Harmonics_and_Transient": "Çökme + Harmonik + Darbe Geçicisi (3'lü Melez)",
+    "Swell_with_Harmonics_and_Transient": "Yükselme + Harmonik + Darbe Geçicisi (3'lü Melez)",
+    "Sag_with_Harmonics_and_Oscillatory_Transient": "Çökme + Harmonik + Salınımlı Geçici (3'lü Melez)",
+    "Swell_with_Harmonics_and_Oscillatory_Transient": "Yükselme + Harmonik + Salınımlı Geçici (3'lü Melez)",
+    "Flicker_with_Sag_and_Harmonics": "Kırpışma + Çökme + Harmonik (3'lü Melez)",
+    "Flicker_with_Swell_and_Harmonics": "Kırpışma + Yükselme + Harmonik (3'lü Melez)"
 }
-
-def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=False):
+def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=True):
     csv_files = sorted(glob.glob(os.path.join(dataset_folder, "*.csv")))
     
     if not csv_files:
@@ -41,7 +48,6 @@ def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplic
     for file_path in csv_files:
         raw_name = os.path.splitext(os.path.basename(file_path))[0]
         
-        # Harmonics_with_Sag ile Sag_with_Harmonics'i birleştir
         if merge_duplicate_pairs:
             if raw_name == "Sag_with_Harmonics":
                 raw_name = "Harmonics_with_Sag"
@@ -50,20 +56,16 @@ def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplic
                 
         tr_label = CLASS_NAME_MAP.get(raw_name, raw_name)
         
-        # CSV dosyasını başlık olmadan oku
         df = pd.read_csv(file_path, header=None)
-        
-        # Eğer ilk hücre metin ise tekrar başlıklı oku
         if isinstance(df.iloc[0, 0], str):
             df = pd.read_csv(file_path)
             
         data = df.values.astype(float)
         
-        # matris (100, 1000) ise transpozunu al (1000, 100)
         if data.shape[0] < data.shape[1] and data.shape[1] == 1000:
             data = data.T
             
-        print(f"İşleniyor: {raw_name:32s} | Boyut: {data.shape} -> {tr_label}")
+        print(f"İşleniyor: {raw_name:50s} | Boyut: {data.shape} -> {tr_label}")
         
         for i in range(data.shape[0]):
             signal = data[i, :]
@@ -78,8 +80,8 @@ def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplic
     
     output_csv = "xpqrs_features.csv"
     features_df.to_csv(output_csv, index=False)
-    print(f"\n✅ Toplam {len(features_df)} adet sinyal analiz edildi ve '{output_csv}' dosyasına kaydedildi!")
+    print(f"\nToplam {len(features_df)} adet sinyal analiz edildi ve '{output_csv}' dosyasına kaydedildi!")
     return features_df
 
 if __name__ == "__main__":
-    load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=False)
+    load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=True)
