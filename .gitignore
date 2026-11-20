@@ -1,0 +1,11 @@
+# Python önbellek ve sanal ortam dosyaları
+venv/
+__pycache__/
+.DS_Store
+
+# Büyük model ağırlıkları (GitHub limit aşımı engellemek için)
+models/*.pkl
+models/*.pt
+
+# Çıktı raporları ve CSV verileri
+outputs/*.csv
