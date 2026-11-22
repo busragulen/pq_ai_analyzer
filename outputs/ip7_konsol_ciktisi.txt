@@ -1,0 +1,271 @@
+'xpqrs_features.csv' okunuyor...
+Veri Bölünmesi -> Eğitim: 17500 (%70) | Doğrulama (Val): 3750 (%15) | Test: 3750 (%15)
+
+ANOVA ile Seçilen En Etkili Özellikler (16 / 20 adet):
+['RMS', 'Peak', 'Crest_Factor', 'Std_Dev', 'Energy', 'Entropy', 'RMS_Min_Ratio', 'RMS_Max_Ratio', 'RMS_Env_Std', 'THD_Percent', 'H3_Ratio', 'H5_Ratio', 'H7_Ratio', 'Wavelet_E_A3', 'Wavelet_Max_D1', 'Wavelet_Max_D2']
+
+===============================================================================================
+[Kübik SVM (DVM)] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %87.30 ± %0.28 | Val: %88.16 (Makro F1: %88.47) | Test: %87.41 (Makro F1: %87.59) | Param: {'C': 50, 'coef0': 1.0, 'gamma': 'auto'}
+   └─ Seçili Özellik (16) : 5-Fold CV: %85.61 ± %0.53 | Val: %85.89 (Makro F1: %86.12) | Test: %84.96 (Makro F1: %85.07) | Param: {'C': 100, 'coef0': 1.0, 'gamma': 'auto'}
+
+[RBF SVM (DVM)] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %86.93 ± %0.40 | Val: %87.25 (Makro F1: %87.59) | Test: %86.69 (Makro F1: %86.88) | Param: {'C': 100, 'gamma': 'auto'}
+   └─ Seçili Özellik (16) : 5-Fold CV: %85.39 ± %0.60 | Val: %86.32 (Makro F1: %86.53) | Test: %85.33 (Makro F1: %85.41) | Param: {'C': 100, 'gamma': 'scale'}
+
+[Random Forest] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %86.97 ± %0.43 | Val: %87.04 (Makro F1: %87.37) | Test: %86.16 (Makro F1: %86.32) | Param: {'criterion': 'entropy', 'max_depth': 20, 'min_samples_split': 5, 'n_estimators': 200}
+   └─ Seçili Özellik (16) : 5-Fold CV: %85.61 ± %0.61 | Val: %85.52 (Makro F1: %85.73) | Test: %85.31 (Makro F1: %85.44) | Param: {'criterion': 'entropy', 'max_depth': None, 'min_samples_split': 2, 'n_estimators': 200}
+   └─ OOB (Torba Dışı) Skoru -> Tüm Öz.: %87.08 | Seçili Öz.: %85.63
+
+[Bagged Trees (Topluluk)] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %86.56 ± %0.45 | Val: %86.56 (Makro F1: %86.86) | Test: %86.29 (Makro F1: %86.47) | Param: {'max_features': 0.8, 'max_samples': 1.0, 'n_estimators': 100}
+   └─ Seçili Özellik (16) : 5-Fold CV: %85.13 ± %0.58 | Val: %84.88 (Makro F1: %85.08) | Test: %84.83 (Makro F1: %84.99) | Param: {'max_features': 0.8, 'max_samples': 1.0, 'n_estimators': 100}
+   └─ OOB (Torba Dışı) Skoru -> Tüm Öz.: %86.55 | Seçili Öz.: %84.76
+
+[YSA / MLP (Çok Katmanlı Algılayıcı)] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %87.06 ± %0.75 | Val: %87.95 (Makro F1: %88.37) | Test: %87.39 (Makro F1: %87.78) | Param: {'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.002}
+   └─ Seçili Özellik (16) : 5-Fold CV: %85.77 ± %0.56 | Val: %86.48 (Makro F1: %86.68) | Test: %86.77 (Makro F1: %86.83) | Param: {'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.002}
+
+[Karar Ağacı (Decision Tree)] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %80.28 ± %0.59 | Val: %79.52 (Makro F1: %79.85) | Test: %80.13 (Makro F1: %80.45) | Param: {'criterion': 'entropy', 'max_depth': 15, 'min_samples_split': 5}
+   └─ Seçili Özellik (16) : 5-Fold CV: %77.79 ± %0.48 | Val: %78.72 (Makro F1: %79.36) | Test: %78.00 (Makro F1: %78.31) | Param: {'criterion': 'entropy', 'max_depth': 15, 'min_samples_split': 2}
+
+[KNN] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %74.25 ± %0.24 | Val: %75.52 (Makro F1: %75.34) | Test: %74.83 (Makro F1: %74.63) | Param: {'metric': 'manhattan', 'n_neighbors': 5, 'weights': 'distance'}
+   └─ Seçili Özellik (16) : 5-Fold CV: %74.05 ± %0.77 | Val: %76.43 (Makro F1: %76.17) | Test: %75.15 (Makro F1: %74.80) | Param: {'metric': 'manhattan', 'n_neighbors': 7, 'weights': 'distance'}
+
+[Naive Bayes (Gaussian)] için 5-Katlı Çapraz Doğrulama (Grid Search) çalışıyor...
+   ├─ Tüm Özellikler (20) : 5-Fold CV: %64.07 ± %0.74 | Val: %65.01 (Makro F1: %66.49) | Test: %64.67 (Makro F1: %65.80) | Param: {'var_smoothing': 1e-09}
+   └─ Seçili Özellik (16) : 5-Fold CV: %62.26 ± %0.85 | Val: %62.99 (Makro F1: %64.00) | Test: %62.85 (Makro F1: %63.65) | Param: {'var_smoothing': 1e-09}
+
+===============================================================================================
+Doğrulama Kümesine Göre Seçilen En Başarılı Model : Kübik SVM (DVM) (Tüm Özellikler)
+Optimum Parametreler                             : {'C': 50, 'coef0': 1.0, 'gamma': 'auto'}
+Doğrulama (Validation) Doğruluğu / Makro F1      : %88.16 / %88.47
+Nihai Kör Test (Test Set) Doğruluğu / Makro F1   : %87.41 / %87.59
+En iyi model 'models/pq_model_bundle.pkl' olarak kaydedildi.
+Tüm klasik modeller 'models/all_ml_models_bundle.pkl' olarak kaydedildi.
+Grid Search raporu 'outputs/ml_grid_search_results.csv' olarak kaydedildi.
+
+[Kübik SVM (DVM) (Tüm Özellikler)] için Sınıf Bazında Precision, Recall, F1-Score ve Karmaşıklık Matrisi kaydediliyor...
+Sınıf bazlı F1 raporu 'outputs/classification_report_best_ml.csv' ve Karmaşıklık Matrisi 'outputs/confusion_matrix_best_ml.csv' kaydedildi!
+
+SHAP Özellik Önem Dereceleri hesaplanıyor (Optimize Random Forest TreeExplainer, Doğrulama Kümesi n=500)...
+SHAP İlk 16 ile ANOVA İlk 16 Özellik Örtüşmesi: 13/16 (%81.2)
+SHAP ve ANOVA karşılaştırmalı analiz sonuçları 'outputs/shap_importance.csv' dosyasına kaydedildi!
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+Çalışma Ortamı: mps
+XPQRS klasöründeki 25 dosya okunuyor...
+Toplam 25000 sinyal ve 23 benzersiz sınıf yüklendi.
+Veri Bölünmesi -> Eğitim: 17500 (%70) | Doğrulama (Val): 3750 (%15) | Test: 3750 (%15)
+
+1D-CNN HIZLI HİPER-PARAMETRE OPTİMİZASYONU (GRID SEARCH)
+Toplam 24 farklı hiper-parametre kombinasyonu Doğrulama (Val) kümesinde taranacak...
+
+[01/24] {'lr': 0.001, 'batch_size': 32, 'dropout': 0.2, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %64.61 | Makro F1: %58.13
+[02/24] {'lr': 0.001, 'batch_size': 32, 'dropout': 0.2, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %77.63 | Makro F1: %76.86
+[03/24] {'lr': 0.001, 'batch_size': 32, 'dropout': 0.3, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %75.23 | Makro F1: %72.41
+[04/24] {'lr': 0.001, 'batch_size': 32, 'dropout': 0.3, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %78.16 | Makro F1: %77.58
+[05/24] {'lr': 0.001, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %66.08 | Makro F1: %58.74
+[06/24] {'lr': 0.001, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %89.92 | Makro F1: %89.70
+[07/24] {'lr': 0.001, 'batch_size': 64, 'dropout': 0.3, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %87.73 | Makro F1: %87.77
+[08/24] {'lr': 0.001, 'batch_size': 64, 'dropout': 0.3, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %87.07 | Makro F1: %87.16
+[09/24] {'lr': 0.002, 'batch_size': 32, 'dropout': 0.2, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %65.52 | Makro F1: %59.46
+[10/24] {'lr': 0.002, 'batch_size': 32, 'dropout': 0.2, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %85.04 | Makro F1: %84.06
+[11/24] {'lr': 0.002, 'batch_size': 32, 'dropout': 0.3, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %77.47 | Makro F1: %75.97
+[12/24] {'lr': 0.002, 'batch_size': 32, 'dropout': 0.3, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %83.25 | Makro F1: %83.41
+[13/24] {'lr': 0.002, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %78.13 | Makro F1: %75.82
+[14/24] {'lr': 0.002, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %64.77 | Makro F1: %58.25
+[15/24] {'lr': 0.002, 'batch_size': 64, 'dropout': 0.3, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %86.03 | Makro F1: %85.99
+[16/24] {'lr': 0.002, 'batch_size': 64, 'dropout': 0.3, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %83.04 | Makro F1: %82.57
+[17/24] {'lr': 0.003, 'batch_size': 32, 'dropout': 0.2, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %78.96 | Makro F1: %78.45
+[18/24] {'lr': 0.003, 'batch_size': 32, 'dropout': 0.2, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %72.75 | Makro F1: %69.55
+[19/24] {'lr': 0.003, 'batch_size': 32, 'dropout': 0.3, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %63.87 | Makro F1: %58.54
+[20/24] {'lr': 0.003, 'batch_size': 32, 'dropout': 0.3, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %84.19 | Makro F1: %83.89
+[21/24] {'lr': 0.003, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %79.28 | Makro F1: %78.09
+[22/24] {'lr': 0.003, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %73.81 | Makro F1: %70.88
+[23/24] {'lr': 0.003, 'batch_size': 64, 'dropout': 0.3, 'weight_decay': 0.0} --> Doğrulama (Val) Doğruluğu: %76.91 | Makro F1: %77.08
+[24/24] {'lr': 0.003, 'batch_size': 64, 'dropout': 0.3, 'weight_decay': 0.0001} --> Doğrulama (Val) Doğruluğu: %84.80 | Makro F1: %84.29
+
+En İyi CNN Parametreleri (Val Kümesine Göre): {'lr': 0.001, 'batch_size': 64, 'dropout': 0.2, 'weight_decay': 0.0001} (Val Acc: %89.92)
+
+STANDART 1D-CNN EĞİTİMİ (SADECE TEMİZ VERİ - EPOCH SEÇİMİ VAL KÜMESİYLE)
+[Standart-CNN] Epoch 01/14 | Loss: 1.4419 | Val Doğruluğu: %60.75 | Val Makro F1: %58.73 (En İyi Val: %60.75 @ Epoch 1)
+[Standart-CNN] Epoch 02/14 | Loss: 0.7767 | Val Doğruluğu: %69.41 | Val Makro F1: %67.38 (En İyi Val: %69.41 @ Epoch 2)
+[Standart-CNN] Epoch 03/14 | Loss: 0.6533 | Val Doğruluğu: %82.27 | Val Makro F1: %82.27 (En İyi Val: %82.27 @ Epoch 3)
+[Standart-CNN] Epoch 04/14 | Loss: 0.5661 | Val Doğruluğu: %81.95 | Val Makro F1: %82.01 (En İyi Val: %82.27 @ Epoch 3)
+[Standart-CNN] Epoch 05/14 | Loss: 0.5265 | Val Doğruluğu: %63.87 | Val Makro F1: %59.96 (En İyi Val: %82.27 @ Epoch 3)
+[Standart-CNN] Epoch 06/14 | Loss: 0.4925 | Val Doğruluğu: %88.93 | Val Makro F1: %88.83 (En İyi Val: %88.93 @ Epoch 6)
+[Standart-CNN] Epoch 07/14 | Loss: 0.4468 | Val Doğruluğu: %87.84 | Val Makro F1: %87.72 (En İyi Val: %88.93 @ Epoch 6)
+[Standart-CNN] Epoch 08/14 | Loss: 0.4236 | Val Doğruluğu: %86.85 | Val Makro F1: %87.72 (En İyi Val: %88.93 @ Epoch 6)
+[Standart-CNN] Epoch 09/14 | Loss: 0.3990 | Val Doğruluğu: %73.55 | Val Makro F1: %70.61 (En İyi Val: %88.93 @ Epoch 6)
+[Standart-CNN] Epoch 10/14 | Loss: 0.3259 | Val Doğruluğu: %89.15 | Val Makro F1: %89.13 (En İyi Val: %89.15 @ Epoch 10)
+[Standart-CNN] Epoch 11/14 | Loss: 0.3081 | Val Doğruluğu: %93.33 | Val Makro F1: %93.25 (En İyi Val: %93.33 @ Epoch 11)
+[Standart-CNN] Epoch 12/14 | Loss: 0.2875 | Val Doğruluğu: %90.43 | Val Makro F1: %90.81 (En İyi Val: %93.33 @ Epoch 11)
+[Standart-CNN] Epoch 13/14 | Loss: 0.2879 | Val Doğruluğu: %91.23 | Val Makro F1: %90.95 (En İyi Val: %93.33 @ Epoch 11)
+[Standart-CNN] Epoch 14/14 | Loss: 0.2554 | Val Doğruluğu: %89.63 | Val Makro F1: %89.34 (En İyi Val: %93.33 @ Epoch 11)
+--> [Standart-CNN] Doğrulama kümesine göre en iyi ağırlıklar (Epoch 11 - %93.33) yüklendi.
+★ [Standart-CNN] Nihai Kör Test (Temiz Test Set) Doğruluğu: %92.83 | Makro F1: %92.71
+
+[ANALİZ] Standart-CNN 40 dB SNR Hata İncelemesi (Doğruluk: %80.93 | Makro F1: %77.70):
+   -> Gerçek: 'Kırpışma (Flicker)' ==> Tahmin: 'Darbe Tipi Geçici Olay (Transient)' (139 örnek karıştı)
+   -> Gerçek: 'Normal Sinüs' ==> Tahmin: 'Darbe Tipi Geçici Olay (Transient)' (98 örnek karıştı)
+   -> Gerçek: 'Normal Sinüs' ==> Tahmin: 'Gerilim Çökmesi (Sag)' (48 örnek karıştı)
+   -> Gerçek: 'Harmonik Bozulma' ==> Tahmin: 'Kırpışma + Çökme + Harmonik (3'lü Melez)' (46 örnek karıştı)
+   -> Gerçek: 'Kırpışma + Harmonik (2'li Melez)' ==> Tahmin: 'Kırpışma + Yükselme + Harmonik (3'lü Melez)' (42 örnek karıştı)
+40 dB detaylı analiz tabloları 'outputs/classification_report_std_cnn_40dB.csv' ve 'outputs/confusion_matrix_std_cnn_40dB.csv' olarak kaydedildi.
+
+GÜRÜLTÜYE DAYANIKLI 1D-CNN EĞİTİMİ (TEMİZ + AWGN GÜRÜLTÜLÜ VERİ - EPOCH SEÇİMİ VAL KÜMESİYLE)
+[Robust-CNN] Epoch 01/18 | Loss: 1.0782 | Val Doğruluğu: %71.88 | Val Makro F1: %70.81 (En İyi Val: %71.88 @ Epoch 1)
+[Robust-CNN] Epoch 02/18 | Loss: 0.6967 | Val Doğruluğu: %75.96 | Val Makro F1: %74.25 (En İyi Val: %75.96 @ Epoch 2)
+[Robust-CNN] Epoch 03/18 | Loss: 0.6055 | Val Doğruluğu: %83.88 | Val Makro F1: %83.99 (En İyi Val: %83.88 @ Epoch 3)
+[Robust-CNN] Epoch 04/18 | Loss: 0.5439 | Val Doğruluğu: %85.64 | Val Makro F1: %85.80 (En İyi Val: %85.64 @ Epoch 4)
+[Robust-CNN] Epoch 05/18 | Loss: 0.5065 | Val Doğruluğu: %81.25 | Val Makro F1: %80.83 (En İyi Val: %85.64 @ Epoch 4)
+[Robust-CNN] Epoch 06/18 | Loss: 0.4728 | Val Doğruluğu: %84.91 | Val Makro F1: %85.21 (En İyi Val: %85.64 @ Epoch 4)
+[Robust-CNN] Epoch 07/18 | Loss: 0.4524 | Val Doğruluğu: %87.55 | Val Makro F1: %87.53 (En İyi Val: %87.55 @ Epoch 7)
+[Robust-CNN] Epoch 08/18 | Loss: 0.4310 | Val Doğruluğu: %86.21 | Val Makro F1: %86.27 (En İyi Val: %87.55 @ Epoch 7)
+[Robust-CNN] Epoch 09/18 | Loss: 0.4093 | Val Doğruluğu: %86.43 | Val Makro F1: %86.36 (En İyi Val: %87.55 @ Epoch 7)
+[Robust-CNN] Epoch 10/18 | Loss: 0.3969 | Val Doğruluğu: %88.87 | Val Makro F1: %88.96 (En İyi Val: %88.87 @ Epoch 10)
+[Robust-CNN] Epoch 11/18 | Loss: 0.3915 | Val Doğruluğu: %86.93 | Val Makro F1: %86.95 (En İyi Val: %88.87 @ Epoch 10)
+[Robust-CNN] Epoch 12/18 | Loss: 0.3755 | Val Doğruluğu: %88.37 | Val Makro F1: %88.46 (En İyi Val: %88.87 @ Epoch 10)
+[Robust-CNN] Epoch 13/18 | Loss: 0.3628 | Val Doğruluğu: %85.66 | Val Makro F1: %85.86 (En İyi Val: %88.87 @ Epoch 10)
+[Robust-CNN] Epoch 14/18 | Loss: 0.3151 | Val Doğruluğu: %89.48 | Val Makro F1: %89.57 (En İyi Val: %89.48 @ Epoch 14)
+[Robust-CNN] Epoch 15/18 | Loss: 0.3063 | Val Doğruluğu: %90.24 | Val Makro F1: %90.31 (En İyi Val: %90.24 @ Epoch 15)
+[Robust-CNN] Epoch 16/18 | Loss: 0.2972 | Val Doğruluğu: %90.47 | Val Makro F1: %90.55 (En İyi Val: %90.47 @ Epoch 16)
+[Robust-CNN] Epoch 17/18 | Loss: 0.2898 | Val Doğruluğu: %90.18 | Val Makro F1: %90.30 (En İyi Val: %90.47 @ Epoch 16)
+[Robust-CNN] Epoch 18/18 | Loss: 0.2911 | Val Doğruluğu: %89.78 | Val Makro F1: %89.84 (En İyi Val: %90.47 @ Epoch 16)
+--> [Robust-CNN] Doğrulama kümesine göre en iyi ağırlıklar (Epoch 16 - %90.47) yüklendi.
+★ [Robust-CNN] Nihai Kör Test (Temiz Test Set) Doğruluğu: %93.33 | Makro F1: %93.18
+Gürültüye Dayanıklı 1D-CNN Modeli 'models/pq_cnn_model.pt' olarak kaydedildi!
+1D-CNN F1 raporu ('outputs/classification_report_cnn.csv') ve Karmaşıklık Matrisi ('outputs/confusion_matrix_cnn.csv') kaydedildi.
+
+AWGN GÜRÜLTÜ DAYANIKLILIK TESTİ (TÜM TEST KÜMESİ: 3750 ÖRNEK & 3 FARKLI TOHUM)
+Temiz test kümesi için klasik model özellikleri çıkarılıyor...
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+SNR = Temiz (∞ dB) | Standart CNN: %92.83 (F1: %92.71) | Robust CNN: %93.33 (F1: %93.18) | Kübik SVM (DVM) (Tüm Özellikler): %87.41 (F1: %87.59)
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+SNR = 40 dB | Standart CNN: %80.74 ± %0.19 (F1: %77.49) | Robust CNN: %93.12 ± %0.08 (F1: %92.96) | Kübik SVM (DVM) (Tüm Özellikler): %76.93 ± %0.08 (F1: %75.03)
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+SNR = 30 dB | Standart CNN: %46.87 ± %0.18 (F1: %44.95) | Robust CNN: %91.82 ± %0.14 (F1: %91.77) | Kübik SVM (DVM) (Tüm Özellikler): %65.42 ± %0.08 (F1: %59.33)
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+SNR = 25 dB | Standart CNN: %24.50 ± %0.16 (F1: %22.20) | Robust CNN: %89.89 ± %0.19 (F1: %89.97) | Kübik SVM (DVM) (Tüm Özellikler): %47.55 ± %0.51 (F1: %40.98)
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Users/busragulen/Library/Python/3.9/lib/python/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+SNR = 20 dB | Standart CNN: %15.31 ± %0.19 (F1: %12.16) | Robust CNN: %84.41 ± %0.44 (F1: %84.79) | Kübik SVM (DVM) (Tüm Özellikler): %29.32 ± %0.21 (F1: %23.59)
+Kapsamlı gürültü dayanıklılık sonuçları 'outputs/noise_robustness_results.csv' ve 'outputs/noise_robustness_all_models.csv' olarak kaydedildi!
+===============================================================================================
+ORİJİNAL XPQRS (EŞ SINIF ÇİFTLERİ BİRLEŞTİRİLMİŞ - 15 SINIF / 17.000 SİNYAL) ANALİZİ
+===============================================================================================
+Klasik ML Veri Seti : 17000 sinyal | Benzersiz Sınıf Sayısı: 15
+[Kübik SVM (DVM)   ] 5-Fold CV: %89.43 ± %0.30 (Makro F1: %90.06 ± %0.32) | Val: %89.92 (F1: %90.56) | Test: %89.18 (F1: %89.66)
+[RBF SVM (DVM)     ] 5-Fold CV: %88.89 ± %0.36 (Makro F1: %89.52 ± %0.36) | Val: %89.29 (F1: %90.01) | Test: %89.53 (F1: %90.01)
+[Random Forest     ] 5-Fold CV: %90.18 ± %0.54 (Makro F1: %90.66 ± %0.61) | Val: %90.39 (F1: %91.02) | Test: %89.57 (F1: %90.10)
+
+[1D-CNN (15 Sınıf)] Eğitim Başlıyor (14 Epoch - Val Seçimli)...
+[1D-CNN (15 Sınıf) ] Doğrulama (Val): %94.82 (Makro F1: %94.61) | Kör Test (Test Set): %94.86 (Makro F1: %94.66)
+===============================================================================================
+15 Sınıflı Baz Senaryo Sonuçları 'outputs/xpqrs_15_classes_benchmark.csv' dosyasına kaydedildi!
+==========================================================================================
+1. HAM VERİ KOPYA (EXACT DUPLICATE) DENETİMİ
+==========================================================================================
+Taranan CSV dosyası: 25 | Toplam dosya içi birebir kopya satır: 999
+Dosyalar arası birebir eşleşen satır çiftleri:
+   -> Pure_Sinusoidal <-> Swell: 1 birebir eşleşme
+
+==========================================================================================
+2. SATIR İNDEKSİ SIZINTI DENETİMİ (STANDART STRATIFIED vs GRUP BAZLI BÖLME)
+==========================================================================================
+Toplam örnek: 25000 | Benzersiz sınıf: 23 | Benzersiz kaynak satır grubu: 1000
+[Standart_Stratified_Split    | Random Forest   ] Val Acc: %87.04 (F1: %87.37) | Test Acc: %86.16 (F1: %86.32)
+[Standart_Stratified_Split    | RBF SVM (DVM)   ] Val Acc: %87.33 (F1: %87.62) | Test Acc: %86.75 (F1: %86.94)
+[Standart_Stratified_Split    | Kübik SVM (DVM) ] Val Acc: %88.16 (F1: %88.47) | Test Acc: %87.41 (F1: %87.59)
+[Grup_Bazli_Sizintisiz_Split  | Random Forest   ] Val Acc: %87.07 (F1: %87.30) | Test Acc: %86.61 (F1: %86.99)
+[Grup_Bazli_Sizintisiz_Split  | RBF SVM (DVM)   ] Val Acc: %87.57 (F1: %87.90) | Test Acc: %86.99 (F1: %87.40)
+[Grup_Bazli_Sizintisiz_Split  | Kübik SVM (DVM) ] Val Acc: %88.29 (F1: %88.65) | Test Acc: %87.15 (F1: %87.55)
+
+------------------------------------------------------------------------------------------
+SIZINTI ETKİSİ ÖZETİ (Standart Split - Grup Bazlı Sızıntısız Split):
+------------------------------------------------------------------------------------------
+   -> Random Forest    | Test Acc Farkı: -0.45 puan (%86.16 vs %86.61) | Test Makro F1 Farkı: -0.67 puan (%86.32 vs %86.99)
+   -> RBF SVM (DVM)    | Test Acc Farkı: -0.24 puan (%86.75 vs %86.99) | Test Makro F1 Farkı: -0.46 puan (%86.94 vs %87.40)
+   -> Kübik SVM (DVM)  | Test Acc Farkı: +0.27 puan (%87.41 vs %87.15) | Test Makro F1 Farkı: +0.04 puan (%87.59 vs %87.55)
+
+Sonuçlar '/Users/busragulen/pq_ai_analyzer/outputs/sizinti_kontrolu_sonuclari.csv' ve 'outputs/sizinti_kontrolu_ozet.csv' olarak kaydedildi.

@@ -16,7 +16,6 @@ from pq_analyzer import (
 from prepare_data import CLASS_NAME_MAP
 
 st.set_page_config(page_title="Güç Kalitesi AI Analizörü", layout="wide")
-
 st.markdown("""
     <style>
         .block-container {
@@ -24,8 +23,8 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
 st.title("⚡ Yapay Zeka ve Derin Öğrenme Destekli Güç Kalitesi Analiz Sistemi")
+
 
 class PQ_1DCNN(nn.Module):
     def __init__(self, num_classes=23, dropout_rate=0.25):
@@ -35,18 +34,15 @@ class PQ_1DCNN(nn.Module):
             nn.BatchNorm1d(32),
             nn.ReLU(),
             nn.MaxPool1d(2),
-
             nn.Conv1d(32, 64, kernel_size=5, padding=2),
             nn.BatchNorm1d(64),
             nn.ReLU(),
             nn.MaxPool1d(2),
-
             nn.Conv1d(64, 128, kernel_size=3, padding=1),
             nn.BatchNorm1d(128),
             nn.ReLU(),
             nn.AdaptiveAvgPool1d(1)
         )
-
         self.classifier = nn.Sequential(
             nn.Flatten(),
             nn.Linear(128, 128),
@@ -60,11 +56,13 @@ class PQ_1DCNN(nn.Module):
         feat = self.features(x)
         return self.classifier(feat)
 
+
 @st.cache_resource
 def load_ml_bundle(mtime=0.0):
     if os.path.exists("models/pq_model_bundle.pkl"):
         return joblib.load("models/pq_model_bundle.pkl")
     return None
+
 
 @st.cache_resource
 def load_cnn_bundle():
@@ -76,6 +74,7 @@ def load_cnn_bundle():
         return cnn_model, encoder
     return None, None
 
+
 def add_single_awgn(signal, snr_db):
     if snr_db >= 60:
         return signal
@@ -85,6 +84,7 @@ def add_single_awgn(signal, snr_db):
     noise = np.random.normal(0, np.sqrt(noise_power), signal.shape)
     return signal + noise
 
+
 def build_multicycle_view(single_cycle_sig, class_hint="", fs=5000, f0=50, n_cycles=10):
     """
     1 periyotluk (20 ms) sinyali Sag, Swell, Interruption ve Flicker zarflarını
@@ -93,10 +93,8 @@ def build_multicycle_view(single_cycle_sig, class_hint="", fs=5000, f0=50, n_cyc
     N = len(single_cycle_sig)
     t_single = np.arange(N) / fs
     nominal_cycle = np.sin(2 * np.pi * f0 * t_single)
-
     name_lower = class_hint.lower()
     cycles = []
-
     for c in range(n_cycles):
         if "flicker" in name_lower:
             t_curr = (np.arange(N) + c * N) / fs
@@ -119,9 +117,7 @@ def build_multicycle_view(single_cycle_sig, class_hint="", fs=5000, f0=50, n_cyc
                 cyc = nominal_cycle.copy()
         else:
             cyc = single_cycle_sig.copy()
-
         cycles.append(cyc)
-
     full_sig = np.concatenate(cycles)
     t_full_ms = np.arange(len(full_sig)) / fs * 1000.0
     return t_full_ms, full_sig
@@ -180,7 +176,6 @@ def render_isolated_components(
         "#8c564b", "#e377c2", "#17becf", "#bcbd22", "#393b79"
     ]
     global_max_amp = max([float(np.max(np.abs(c["signal"]))) for c in components] + [0.1]) * 1.15
-
     if view_mode == "Her Bileşen İçin Ayrı Zaman + FFT Satırı":
         for idx_c, comp in enumerate(components):
             color = "#555555" if comp.get("kind") == "residual" else color_palette[idx_c % len(color_palette)]
@@ -192,7 +187,6 @@ def render_isolated_components(
                 f"Enerji Payı: `%{comp['power_share_pct']:.2f}`"
             )
             c_left, c_right = st.columns(2)
-
             with c_left:
                 fig_t, ax_t = plt.subplots(figsize=(6.2, 2.35))
                 ax_t.plot(t_ms, comp["signal"], color=color, linewidth=1.4)
@@ -206,7 +200,6 @@ def render_isolated_components(
                 fig_t.tight_layout()
                 st.pyplot(fig_t)
                 plt.close(fig_t)
-
             with c_right:
                 fig_f, ax_f = plt.subplots(figsize=(6.2, 2.35))
                 c_mask = comp["xf"] <= fft_max_freq
@@ -249,9 +242,7 @@ def render_isolated_components(
 st.sidebar.header("⚙️ Sinyal ve Şebeke Ayarları")
 fs = st.sidebar.number_input("Örnekleme Frekansı (Hz)", value=5000, step=500)
 f0 = st.sidebar.selectbox("Şebeke Temel Frekansı (Hz)", [50, 60], index=0)
-
 data_source = st.sidebar.radio("Veri Kaynağı:", ["XPQRS Veri Setinden Test Et", "Dışarıdan CSV Yükle"])
-
 df = None
 selected_file = "Harici_Sinyal"
 if data_source == "XPQRS Veri Setinden Test Et" and os.path.exists("data/XPQRS"):
@@ -289,13 +280,11 @@ cnn_model, encoder = load_cnn_bundle()
 clean_signal = None
 signal = None
 row_idx = 0
-
 if df is not None:
-    row_idx = st.sidebar.slider("Sinyal Örneği No (0 - 999)", 0, len(df)-1, 0)
+    row_idx = st.sidebar.slider("Sinyal Örneği No (0 - 999)", 0, len(df) - 1, 0)
     clean_signal = df.iloc[row_idx].values.astype(float)
     signal = add_single_awgn(clean_signal, snr_val) if enable_noise else clean_signal
     t = np.arange(len(signal)) / fs * 1000
-
     t0_feat = time.perf_counter()
     features, xf, yf = extract_signal_features(signal, fs=fs, f0=f0)
     feat_time_ms = (time.perf_counter() - t0_feat) * 1000.0
@@ -303,28 +292,23 @@ if df is not None:
 
     with tab1:
         col_m1, col_m2 = st.columns(2)
-
         if ml_bundle is not None:
             if len(ml_bundle) == 4:
                 ml_model, scaler, selector, ml_model_name = ml_bundle
             else:
                 ml_model, scaler, selector = ml_bundle
                 ml_model_name = type(ml_model).__name__
-
             t0_ml = time.perf_counter()
             df_feat_in = pd.DataFrame([features]).replace([np.inf, -np.inf], np.nan).fillna(0.0)
             X_in = np.clip(scaler.transform(df_feat_in), -10.0, 10.0)
             if selector is not None:
                 X_in = selector.transform(X_in)
-
             probs_ml = ml_model.predict_proba(X_in)[0]
             best_idx = np.argmax(probs_ml)
             ml_pred = ml_model.classes_[best_idx]
             ml_prob = probs_ml[best_idx] * 100
             ml_only_ms = (time.perf_counter() - t0_ml) * 1000.0
-
             total_ml_ms = feat_time_ms + ml_only_ms
-
             col_m1.success(
                 f"🏆 **{ml_model_name} (Özellik Tabanlı) Kararı:**\n\n"
                 f"**{ml_pred}** (Güven: **%{ml_prob:.1f}**)\n\n"
@@ -343,7 +327,6 @@ if df is not None:
                 tr_cls = CLASS_NAME_MAP.get(raw_cls, raw_cls)
                 cnn_prob = probs[pred_idx] * 100
             cnn_time_ms = (time.perf_counter() - t0_cnn) * 1000.0
-
             col_m2.info(
                 f"🧠 **1D-CNN (Gürültüye Dayanıklı Derin Öğrenme) Kararı:**\n\n"
                 f"**{tr_cls}** (Güven: **%{cnn_prob:.1f}**)\n\n"
@@ -354,34 +337,27 @@ if df is not None:
         with g_col1:
             st.subheader("Zaman Domeni Dalga Formu (10 Periyot / 200 ms Panoramik Zarf)")
             fig1, ax1 = plt.subplots(figsize=(6.2, 3.2))
-
             t_multi, clean_multi = build_multicycle_view(clean_signal, class_hint=selected_file, fs=fs, f0=f0, n_cycles=10)
             sig_multi = add_single_awgn(clean_multi, snr_val) if enable_noise else clean_multi
-
             ax1.axhline(1.0, color="green", linestyle=":", alpha=0.5, linewidth=1.0, label="Nominal Sınır (±1.0)")
             ax1.axhline(-1.0, color="green", linestyle=":", alpha=0.5, linewidth=1.0)
-
             if enable_noise:
                 ax1.plot(t_multi, clean_multi, color="gray", alpha=0.35, linestyle="--", label="Temiz Sinyal")
             ax1.plot(t_multi, sig_multi, color="#1f77b4", linewidth=1.2, label="İncelenen Sinyal (10 Periyot)")
-
             analytic_sig = hilbert(clean_multi)
             envelope = np.abs(analytic_sig)
             kernel_size = int(fs / f0)
-            envelope_smooth = np.convolve(envelope, np.ones(kernel_size)/kernel_size, mode='same')
+            envelope_smooth = np.convolve(envelope, np.ones(kernel_size) / kernel_size, mode='same')
             ax1.plot(t_multi, envelope_smooth, color="#d62728", linestyle="--", linewidth=1.5, alpha=0.85, label="Genlik Zarfı (Envelope)")
             ax1.plot(t_multi, -envelope_smooth, color="#d62728", linestyle="--", linewidth=1.5, alpha=0.85)
-
             if any(k in selected_file.lower() for k in ["sag", "swell", "interruption"]):
                 ax1.axvspan(40, 160, color="orange", alpha=0.12, label="Bozulma Bölgesi")
-
             ax1.set_xlabel("Zaman (ms)")
             ax1.set_ylabel("Normalize Genlik")
             ax1.legend(loc="upper right", fontsize=7.5)
             ax1.grid(True, alpha=0.3)
             fig1.tight_layout()
             st.pyplot(fig1)
-
         with g_col2:
             st.subheader("FFT Frekans Spektrumu (Harmonik Analizi)")
             fig2, ax2 = plt.subplots(figsize=(6.2, 3.2))
@@ -398,19 +374,15 @@ if df is not None:
     with tab2:
         st.subheader("🏆 Makine Öğrenmesi Modelleri ve Hiper-Parametre Optimizasyonu (Grid Search)")
         st.write("5 katlı çapraz doğrulama (5-Fold Stratified CV Ortalama ± Std), Doğrulama (Val) ve Kör Test başarımları:")
-
         if os.path.exists("outputs/ml_grid_search_results.csv"):
             gs_df = pd.read_csv("outputs/ml_grid_search_results.csv")
             col_g1, col_g2 = st.columns([1.1, 1.9])
-
             with col_g1:
                 fig_gs, ax_gs = plt.subplots(figsize=(6.2, 4.2))
                 x = np.arange(len(gs_df["Model"]))
                 width = 0.35
-
-                ax_gs.bar(x - width/2, gs_df["Acc_All_Features"], width, label=f"Tüm Özellikler ({num_feats})", color="#1f77b4")
-                ax_gs.bar(x + width/2, gs_df["Acc_Selected_Features"], width, label="Seçili Özellikler (ANOVA)", color="#ff7f0e")
-
+                ax_gs.bar(x - width / 2, gs_df["Acc_All_Features"], width, label=f"Tüm Özellikler ({num_feats})", color="#1f77b4")
+                ax_gs.bar(x + width / 2, gs_df["Acc_Selected_Features"], width, label="Seçili Özellikler (ANOVA)", color="#ff7f0e")
                 ax_gs.set_ylabel("Test Doğruluğu (%)")
                 ax_gs.set_title("Özellik Seçimi Öncesi ve Sonrası Model Başarımları")
                 ax_gs.set_xticks(x)
@@ -420,7 +392,6 @@ if df is not None:
                 ax_gs.grid(True, axis="y", alpha=0.3)
                 fig_gs.tight_layout()
                 st.pyplot(fig_gs)
-
             with col_g2:
                 if "CV_Mean_Std_All" in gs_df.columns:
                     ordered_cols = [
@@ -503,13 +474,37 @@ if df is not None:
             col_n1, col_n2 = st.columns([1.8, 1.2])
             with col_n1:
                 fig_n, ax_n = plt.subplots(figsize=(6.5, 3.8))
-                if "Standart_CNN" in noise_df.columns and "Robust_CNN" in noise_df.columns:
-                    ax_n.plot(noise_df["SNR_dB"], noise_df["Robust_CNN"], marker="s", linewidth=2.5, color="#2ca02c", label="Gürültüye Dayanıklı 1D-CNN (Önerilen)")
+                if "Robust_CNN" in noise_df.columns:
+                    ax_n.plot(
+                        noise_df["SNR_dB"],
+                        noise_df["Robust_CNN"],
+                        marker="s",
+                        linewidth=2.5,
+                        color="#2ca02c",
+                        label="Gürültüye Dayanıklı 1D-CNN (Önerilen)",
+                    )
+                if "Standart_CNN" in noise_df.columns:
+                    ax_n.plot(
+                        noise_df["SNR_dB"],
+                        noise_df["Standart_CNN"],
+                        marker="o",
+                        linestyle="--",
+                        linewidth=2.0,
+                        color="#d62728",
+                        label="Standart 1D-CNN (Temiz Eğitim)",
+                    )
                 if "Klasik_ML" in noise_df.columns and not noise_df["Klasik_ML"].isna().all():
                     ml_label_name = ml_bundle[3] if (ml_bundle and len(ml_bundle) == 4) else "En İyi Klasik ML"
-                    ax_n.plot(noise_df["SNR_dB"], noise_df["Klasik_ML"], marker="^", linestyle="-.", linewidth=2, color="#1f77b4", label=f"Klasik ML ({ml_label_name})")
-
-                    ax_n.legend(loc="lower left", fontsize=8.5)
+                    ax_n.plot(
+                        noise_df["SNR_dB"],
+                        noise_df["Klasik_ML"],
+                        marker="^",
+                        linestyle="-.",
+                        linewidth=2.0,
+                        color="#1f77b4",
+                        label=f"Klasik ML ({ml_label_name})",
+                    )
+                ax_n.legend(loc="lower left", fontsize=8.5)
                 ax_n.set_xlabel("Gürültü Seviyesi (SNR)")
                 ax_n.set_ylabel("Test Doğruluk Oranı (%)")
                 ax_n.set_ylim(0, 105)
@@ -557,13 +552,9 @@ if df is not None:
                     hide_index=True
                 )
 
-# -------------------------------------------------------------------------
-# SEKME 5: HARMONİK SENTEZLEYİCİ & AYRIK BİLEŞEN ANALİZİ
-# (Hem parametrik sentez hem de XPQRS / CSV sinyal ayrıştırma destekli)
-# -------------------------------------------------------------------------
+
 with tab5:
     st.subheader("🎛️ Harmonik Sentezleyici, FFT ve Ayrık Bileşen Analizi")
-
     harm_mode = st.radio(
         "Analiz Modu Seçin:",
         [
@@ -573,15 +564,12 @@ with tab5:
         horizontal=True,
         key="harm_tab_mode",
     )
-
     # PARAMETRİK HARMONİK SENTEZLEYİCİ
-
     if harm_mode == "🧪 Parametrik Harmonik Sentezleyici (Manuel Giriş)":
         st.caption(
             "Temel bileşen ve dilediğiniz harmonik/ara-harmonik bileşenlerin frekans, genlik ve faz parametrelerini girerek "
             "bileşke dalga formunu, FFT frekans spektrumunu ve her bir bileşenin ayrık zaman/FFT grafiklerini inceleyin."
         )
-
         # 1. Temel Sinyal ve Örnekleme Parametreleri
         with st.expander("⚙️ Temel Dalga ve Analiz Parametreleri", expanded=True):
             p_col1, p_col2, p_col3, p_col4 = st.columns(4)
@@ -595,7 +583,6 @@ with tab5:
                 key="harm_window"
             )
             h_window = "hann" if "Hann" in h_window_label else "rect"
-
             p_col5, p_col6, p_col7, p_col8 = st.columns(4)
             h_fund_amp = p_col5.number_input("Temel Bileşen Genliği (A₁)", min_value=0.01, max_value=1000.0, value=1.0, step=0.1, key="harm_a1")
             h_fund_phase = p_col6.number_input("Temel Faz Açısı φ₁ (°)", min_value=-360.0, max_value=360.0, value=0.0, step=5.0, key="harm_p1")
@@ -614,7 +601,6 @@ with tab5:
         pre_col1, pre_col2 = st.columns([2, 1])
         selected_preset = pre_col1.selectbox("Hazır Harmonik Senaryosu Yükle:", preset_options, key="harm_preset_select")
         load_preset_btn = pre_col2.button("Senaryoyu Tabloya Uygula", use_container_width=True, key="harm_apply_preset")
-
         if "harm_table_df" not in st.session_state or load_preset_btn:
             st.session_state["harm_table_df"] = get_harmonic_preset_df(selected_preset, h_f0)
 
@@ -657,7 +643,6 @@ with tab5:
         )
         h_metrics = synth["metrics"]
         h_components = synth["components"]
-
         if h_metrics["Nyquist_Warnings"]:
             warn_freqs = ", ".join(f"{f:.1f} Hz" for f in h_metrics["Nyquist_Warnings"])
             st.warning(
@@ -685,12 +670,10 @@ with tab5:
         )
         fft_scale = vc2.radio("FFT Y-Ekseni Ölçeği", ["Lineer Genlik", "dB Ölçek"], horizontal=True, key="harm_fft_scale")
         share_y_axis = vc3.checkbox("Ayrık Grafiklerde Ortak Y-Ekseni", value=True, key="harm_share_y")
-
         fft_mask = synth["xf"] <= fft_max_freq
 
         st.markdown("### 📊 Bileşke (Toplam) Sinyal ve FFT Spektrumu")
         comp_col1, comp_col2 = st.columns(2)
-
         with comp_col1:
             fig_comp, ax_comp = plt.subplots(figsize=(6.4, 3.4))
             ax_comp.plot(
@@ -711,7 +694,6 @@ with tab5:
             fig_comp.tight_layout()
             st.pyplot(fig_comp)
             plt.close(fig_comp)
-
         with comp_col2:
             fig_cfft, ax_cfft = plt.subplots(figsize=(6.4, 3.4))
             xf_plot = synth["xf"][fft_mask]
@@ -798,7 +780,6 @@ with tab5:
                 one_cycle_len = max(16, int(round(h_fs / h_f0)))
                 ai_sig = synth["composite"][:one_cycle_len] if len(synth["composite"]) >= one_cycle_len else synth["composite"]
                 h_feats, _, _ = extract_signal_features(ai_sig, fs=h_fs, f0=h_f0)
-
                 r_col1, r_col2 = st.columns(2)
                 if ml_bundle is not None:
                     if len(ml_bundle) == 4:
@@ -815,7 +796,6 @@ with tab5:
                     r_col1.success(f"🏆 **{ml_nm} Tahmini:** **{ml_m.classes_[b_i]}** (Güven: **%{p_ml[b_i]*100:.1f}**)")
                 else:
                     r_col1.info("Klasik ML modeli (`models/pq_model_bundle.pkl`) bulunamadı.")
-
                 if cnn_model is not None and encoder is not None:
                     with torch.no_grad():
                         sig_t = torch.tensor(ai_sig, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
@@ -826,7 +806,6 @@ with tab5:
                     r_col2.info(f"🧠 **1D-CNN Tahmini:** **{tr_c}** (Güven: **%{p_cnn[c_i]*100:.1f}**)")
                 else:
                     r_col2.info("1D-CNN modeli (`models/pq_cnn_model.pt`) bulunamadı.")
-
         with act_col2:
             csv_bytes = pd.DataFrame([synth["composite"]]).to_csv(index=False, header=False).encode("utf-8")
             st.download_button(
@@ -836,13 +815,11 @@ with tab5:
                 mime="text/csv",
                 use_container_width=True,
             )
-
     else:
         st.caption(
             "Sol menüde seçili XPQRS sınıfını veya dışarıdan yüklediğiniz CSV sinyalini FFT tabanlı spektral ayrıştırma "
             "(rfft / irfft) ile temel bileşen, tekil harmonikler ve artık (gürültü/diğer olaylar) bileşenlerine ayırarak inceleyin."
         )
-
         if signal is None:
             st.info(
                 "Ayrıştırılacak bir sinyal bulunamadı. Lütfen sol menüden XPQRS veri setinden bir sınıf seçin "
@@ -854,7 +831,6 @@ with tab5:
                 f"📌 **İncelenen Sinyal:** `{selected_file}` | **Örnek No:** `{row_idx}` | "
                 f"**Örnek Sayısı:** `{len(signal)}` | **fs / f₀:** `{fs} Hz / {f0} Hz`{noise_badge}"
             )
-
             with st.expander("⚙️ Ayrıştırma Ayarları", expanded=True):
                 d_col1, d_col2, d_col3, d_col4 = st.columns(4)
                 max_nyq_h = max(3, min(40, int((fs / 2.0) // f0)))
@@ -919,7 +895,6 @@ with tab5:
 
             st.markdown("### 📊 Orijinal Sinyal, Yeniden Oluşturulan Toplam ve FFT Spektrumu")
             dg_col1, dg_col2 = st.columns(2)
-
             with dg_col1:
                 fig_do, ax_do = plt.subplots(figsize=(6.4, 3.4))
                 ax_do.plot(
@@ -944,7 +919,6 @@ with tab5:
                 fig_do.tight_layout()
                 st.pyplot(fig_do)
                 plt.close(fig_do)
-
             with dg_col2:
                 fig_df, ax_df = plt.subplots(figsize=(6.4, 3.4))
                 d_mask = decomp["xf"] <= d_fft_max

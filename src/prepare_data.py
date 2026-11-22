@@ -4,6 +4,10 @@ import numpy as np
 import pandas as pd
 from pq_analyzer import extract_signal_features
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_DATASET_FOLDER = os.path.join(PROJECT_ROOT, "data", "XPQRS")
+DEFAULT_OUTPUT_CSV = os.path.join(PROJECT_ROOT, "xpqrs_features.csv")
+
 CLASS_NAME_MAP = {
     "Pure_Sinusoidal": "Normal Sinüs",
     "Sag": "Gerilim Çökmesi (Sag)",
@@ -31,57 +35,80 @@ CLASS_NAME_MAP = {
     "Sag_with_Harmonics_and_Oscillatory_Transient": "Çökme + Harmonik + Salınımlı Geçici (3'lü Melez)",
     "Swell_with_Harmonics_and_Oscillatory_Transient": "Yükselme + Harmonik + Salınımlı Geçici (3'lü Melez)",
     "Flicker_with_Sag_and_Harmonics": "Kırpışma + Çökme + Harmonik (3'lü Melez)",
-    "Flicker_with_Swell_and_Harmonics": "Kırpışma + Yükselme + Harmonik (3'lü Melez)"
+    "Flicker_with_Swell_and_Harmonics": "Kırpışma + Yükselme + Harmonik (3'lü Melez)",
 }
-def load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=True):
+
+
+def load_xpqrs_dataset(
+    dataset_folder=DEFAULT_DATASET_FOLDER,
+    output_csv=DEFAULT_OUTPUT_CSV,
+    fs=5000,
+    f0=50,
+    merge_duplicate_pairs=True,
+):
+    if not os.path.isabs(dataset_folder) and not os.path.exists(dataset_folder):
+        candidate = os.path.join(PROJECT_ROOT, dataset_folder)
+        if os.path.exists(candidate):
+            dataset_folder = candidate
+
+    if not os.path.isabs(output_csv):
+        output_csv = os.path.join(PROJECT_ROOT, output_csv)
+
     csv_files = sorted(glob.glob(os.path.join(dataset_folder, "*.csv")))
-    
+
     if not csv_files:
         raise FileNotFoundError(f"'{dataset_folder}' klasöründe CSV bulunamadı!")
-        
+
     print(f"XPQRS Veri Setinde {len(csv_files)} adet CSV sınıfı bulundu.\n")
-    
+
     all_features = []
     all_labels = []
     all_raw_names = []
-    
+
     for file_path in csv_files:
         raw_name = os.path.splitext(os.path.basename(file_path))[0]
-        
+
         if merge_duplicate_pairs:
             if raw_name == "Sag_with_Harmonics":
                 raw_name = "Harmonics_with_Sag"
             elif raw_name == "Swell_with_Harmonics":
                 raw_name = "Harmonics_with_Swell"
-                
+
         tr_label = CLASS_NAME_MAP.get(raw_name, raw_name)
-        
+
         df = pd.read_csv(file_path, header=None)
         if isinstance(df.iloc[0, 0], str):
             df = pd.read_csv(file_path)
-            
+
         data = df.values.astype(float)
-        
+
         if data.shape[0] < data.shape[1] and data.shape[1] == 1000:
             data = data.T
-            
+
         print(f"İşleniyor: {raw_name:50s} | Boyut: {data.shape} -> {tr_label}")
-        
+
         for i in range(data.shape[0]):
             signal = data[i, :]
             feats, _, _ = extract_signal_features(signal, fs=fs, f0=f0)
             all_features.append(feats)
             all_labels.append(tr_label)
             all_raw_names.append(raw_name)
-            
+
     features_df = pd.DataFrame(all_features)
     features_df["Class_Code"] = all_raw_names
     features_df["Label"] = all_labels
-    
-    output_csv = "xpqrs_features.csv"
+
+    os.makedirs(os.path.dirname(os.path.abspath(output_csv)), exist_ok=True)
     features_df.to_csv(output_csv, index=False)
     print(f"\nToplam {len(features_df)} adet sinyal analiz edildi ve '{output_csv}' dosyasına kaydedildi!")
     return features_df
 
+
 if __name__ == "__main__":
-    load_xpqrs_dataset(dataset_folder="data/XPQRS", fs=5000, f0=50, merge_duplicate_pairs=True)
+    load_xpqrs_dataset(
+        dataset_folder=DEFAULT_DATASET_FOLDER,
+        output_csv=DEFAULT_OUTPUT_CSV,
+        fs=5000,
+        f0=50,
+        merge_duplicate_pairs=True,
+    )
